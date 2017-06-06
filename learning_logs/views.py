@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import Topic, Entry
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 from .forms import TopicForm, EntryForm
@@ -19,7 +20,7 @@ def topics(request):
 @login_required
 def topic(request, topic_id):
     '''show a single topic and all its entries.'''
-    topic = Topic.objects.get(id = topic_id)
+    topic = get_object_or_404(Topic, id=topic_id)
     #make sure topic belongs to current user
     check_topic_owner(topic, request)
     entries = topic.entry_set.order_by('-date_added')
